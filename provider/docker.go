@@ -235,7 +235,7 @@ func (provider *Docker) getFrontendRule(container dockertypes.ContainerJSON) str
 	if label, err := getLabel(container, "traefik.frontend.rule"); err == nil {
 		return label
 	}
-	return "Host:" + provider.getEscapedName(container.Name) + "." + provider.Domain
+	return "Host:" + provider.getSubDomain(container.Name) + "." + provider.Domain
 }
 
 func (provider *Docker) getBackend(container dockertypes.ContainerJSON) string {
@@ -334,6 +334,6 @@ func listContainers(dockerClient client.APIClient) ([]dockertypes.ContainerJSON,
 }
 
 // Escape beginning slash "/", convert all others to dash "-"
-func (provider *Docker) getEscapedName(name string) string {
+func (provider *Docker) getSubDomain(name string) string {
 	return strings.Replace(strings.TrimPrefix(name, "/"), "/", "-", -1)
 }
